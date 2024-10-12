@@ -1,3 +1,5 @@
+import os
+import environ
 
 from datetime import timedelta
 
@@ -6,17 +8,25 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Initialise environment variables
+env = environ.Env(
+    DEBUG=(bool, False)
+)
+
+# Read .env.dev file
+environ.Env.read_env(os.path.join(BASE_DIR, '.env.dev'))
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-0t$4p@yxx*i3g607gt1nl9_i%m9nq&v=on5vbx&n!a_jpc&=$z'
+SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = bool(env('DEBUG', default=0))
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = env('DJANGO_ALLOWED_HOSTS').split(" ")
 
 
 AUTH_USER_MODEL = 'app_useraccount.User'
@@ -103,10 +113,15 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': env("SQL_ENGINE"),
+        'NAME': env("SQL_DATABASE"),
+        'USER': env("SQL_USER"),
+        'PASSWORD': env("SQL_PASSWORD"),
+        'HOST': env("SQL_HOST"),
+        'PORT': env("SQL_PORT"),
     }
 }
+
 
 
 # Password validation
