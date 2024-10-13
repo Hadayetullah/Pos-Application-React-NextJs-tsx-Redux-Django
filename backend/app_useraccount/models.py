@@ -9,7 +9,7 @@ from django.db import models
 
 # Create your models here.
 class CustomUserManager(BaseUserManager):
-    def _create_user(self, name, email, phone, password, **extra_fields):
+    def _create_user(self, name, email, phone, password=None, **extra_fields):
         if not email:
             raise ValueError('You have not specified a valid email address')
         email = self.normalize_email(email)

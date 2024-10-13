@@ -9,12 +9,10 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Initialise environment variables
-env = environ.Env(
-    DEBUG=(bool, False)
-)
+env = environ.Env()
 
 # Read .env.dev file
-environ.Env.read_env(os.path.join(BASE_DIR, '.env.dev'))
+environ.Env.read_env(BASE_DIR / '.env.dev')
 
 
 # Quick-start development settings - unsuitable for production
