@@ -1,5 +1,8 @@
 import uuid
 
+from django.utils import timezone
+from datetime import timedelta
+
 from django.conf import settings
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 from django.db import models
@@ -34,6 +37,11 @@ class User(AbstractBaseUser, PermissionsMixin):
     phone = models.CharField(max_length=20, null=True, blank=True)
     avater = models.ImageField(upload_to='uploads/avaters')
 
+    # OTP fields
+    otp = models.CharField(max_length=6, null=True, blank=True)
+    otp_created_at = models.DateTimeField(null=True, blank=True)
+
+    # Status flags
     is_active = models.BooleanField(default=True)
     is_shopagent = models.BooleanField(default=False)
     is_shopmanager = models.BooleanField(default=False)
@@ -48,6 +56,14 @@ class User(AbstractBaseUser, PermissionsMixin):
     USERNAME_FIELD = 'email'
     EMAIL_FIELD = 'email'
     REQUIRED_FIELDS = ['name', 'phone']
+
+
+    def otp_is_valid(self):
+        """Checks if the OTP is valid and not expired."""
+        if self.otp and self.otp_created_at:
+            return timezone.now() < self.otp_created_at + timedelta(minutes=5)
+        return False
+    
 
     def avater_url(self):
         if self.avater:
