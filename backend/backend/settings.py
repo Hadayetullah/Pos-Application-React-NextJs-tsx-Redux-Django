@@ -40,7 +40,6 @@ SIMPLE_JWT = {
     "ROTATE_REFRESH_TOKENS": True,  # Enable token rotation
     "BLACKLIST_AFTER_ROTATION": True,  # Blacklist old refresh tokens after rotation
     "ALGORITHM": "HS256",
-    # "SIGNING_KEY": settings.SECRET_KEY,  # This can be used if needed
 }
 
 # Permission classes for DRF
