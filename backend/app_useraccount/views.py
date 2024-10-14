@@ -48,4 +48,13 @@ class OTPVerifyView(APIView):
     
 
 
+class LoginView(APIView):
+    permission_classes = [AllowAny]
 
+    def post(self, request, format=None):
+        serializer = LoginSerializer(data=request.data)
+        if serializer.is_valid():
+            user = serializer.validated_data['user']
+            token = get_tokens_for_user(user)
+            return Response({'token': token, 'msg': 'Logged in successfully'}, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

@@ -67,3 +67,23 @@ class OTPVerifySerializer(serializers.Serializer):
     
 
 
+class LoginSerializer(serializers.Serializer):  # Use Serializer instead of ModelSerializer
+    email = serializers.EmailField()
+    password = serializers.CharField(style={'input_type': 'password'}, write_only=True)
+
+    def validate(self, data):
+        email = data.get('email')
+        password = data.get('password')
+
+        if email and password:
+            # Use authenticate method to check credentials
+            user = authenticate(email=email, password=password)
+            if user is None:
+                raise serializers.ValidationError("Invalid email or password.")
+            if not user.is_active:
+                raise serializers.ValidationError("User account is disabled.")
+        else:
+            raise serializers.ValidationError("Both email and password are required.")
+
+        data['user'] = user
+        return data
