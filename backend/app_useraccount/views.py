@@ -8,7 +8,15 @@ from .serializers import RegisterSerializer
 from .models import User
 
 
-# Create your views here.
+''' Create your views here '''
+
+# Generate token manually
+def get_tokens_for_user(user):
+    refresh = RefreshToken.for_user(user)
+    return {
+        'refresh': str(refresh),
+        'access': str(refresh.access_token),
+    }
 
 class RegisterView(APIView):
     permission_classes = [AllowAny]  # Allow anyone to access this view
