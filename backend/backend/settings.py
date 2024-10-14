@@ -67,6 +67,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt.token_blacklist',  # Add the blacklist app here
     'corsheaders',
     'app_useraccount',
+    'app_product'
 ]
 
 MIDDLEWARE = [
