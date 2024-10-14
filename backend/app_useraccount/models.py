@@ -35,7 +35,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True)
     name = models.CharField(max_length=255, null=True, blank=True)
     phone = models.CharField(max_length=20, null=True, blank=True)
-    avater = models.ImageField(upload_to='uploads/avaters')
+    avater = models.ImageField(upload_to='uploads/avaters', null=True, blank=True)
 
     # OTP fields
     otp = models.CharField(max_length=6, null=True, blank=True)
